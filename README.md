@@ -1,55 +1,44 @@
-Bioinformatics Pipeline for RNA-Seq Analysis of E. coli under Magainin I Treatment
+# Bioinformatics Pipeline for RNA-Seq Analysis of *E. coli* under Magainin I Treatment
 
-Overview
+![License](https://img.shields.io/badge/license-MIT-green) ![Galaxy Workflow](https://img.shields.io/badge/Galaxy%20Workflow-v1.0-blue)
 
-This repository contains the documentation and Galaxy workflow for trimming, aligning, and quantifying RNA-Seq data from Escherichia coli strains resistant and susceptible to the antimicrobial peptide Magainin I. The analysis uses the ENA dataset SRX3733298 and leverages Galaxy’s user‑friendly interface to demonstrate a fully reproducible pipeline.
+---
 
-Table of Contents
+## Overview
 
-Repository Structure
+Questo repository contiene la documentazione, il workflow e i metadati per una pipeline Galaxy completamente riproducibile che esegue trimming, allineamento e quantificazione di dati RNA-Seq da ceppi di *Escherichia coli* trattati con il peptide antimicrobico Magainin I (dataset ENA **SRX3733298**).
 
-Data
+---
 
-Tools
+## Table of Contents
 
-Workflow
+- [Overview](#overview)
+- [Repository Structure](#repository-structure)
+- [Data](#data)
+- [Data Availability](#data-availability)
+- [Tools](#tools)
+- [Workflow](#workflow)
+- [Reproducing the Analysis](#reproducing-the-analysis)
+- [Requirements](#requirements)
+- [License](#license)
+- [Acknowledgements](#acknowledgements)
 
-Parameters
+---
 
-Cutadapt
+## Repository Structure
 
-Bowtie2
+```bash
+├── docs/                # Documentazione (PDF)
+├── slides/              # Presentazioni (PowerPoint)
+├── counts/              # FeatureCounts outputs (tabular counts and summary)
+├── results/
+│   └── plots/           # Resulting plots (PNG files)
+├── LICENSE              # Licenza MIT
+└── README.md            # Questo file
 
-Samtools flagstat
+```
 
-FeatureCounts
-
-Results
-
-Alignment Metrics
-
-Top Expressed Genes
-
-Expression Distribution
-
-Reproducing the Analysis
-
-Requirements
-
-License
-
-Acknowledgements
-
-Repository Structure
-
-├── workflow/            # Galaxy workflow export (.ga)
-├── data/                # Scripts or links to download raw FASTQ
-├── results/             # Trimmed FASTQ, BAM, count tables, plots
-├── scripts/             # R script for plotting and analysis
-├── LICENSE              # MIT License
-└── README.md            # This file
-
-Data
+## Data
 
 Study ID: SRX3733298
 
@@ -61,7 +50,24 @@ FASTQ files: SRR6760835_1.fastq.gz, SRR6760835_2.fastq.gz
 
 Source: European Nucleotide Archive (ENA)
 
-Tools
+## Data Availability
+Raw sequencing data
+ENA dataset SRX3733298
+```bash
+Download:
+https://www.ebi.ac.uk/ena/browser/view/SRX3733298
+```
+Processed data & results
+Disponibili nella release v1.0:
+```bash
+https://github.com/antonio-Landi/Bioinformatica/releases/tag/v1.0.0
+```
+Assets inclusi:
+project_data_v1.0.zip
+Trimmed FASTQ
+BAM alignment files
+
+## Tools
 
 Galaxy: web‐based bioinformatics platform
 
@@ -75,145 +81,37 @@ FeatureCounts: read quantification per gene
 
 R: data exploration and plotting (scripts in scripts/)
 
-Workflow
+## Workflow
 
-Pre‐processing: trim raw FASTQ with Cutadapt in Galaxy.
+Pre‑processing: trim raw FASTQ with Cutadapt in Galaxy.
 
-Alignment: align trimmed reads to E. coli K-12 MG1655 (ASM584v2) with Bowtie2.
+Alignment: map trimmed reads to E. coli K‑12 MG1655 (ASM584v2) with Bowtie2.
 
-QC: collect alignment stats via Samtools flagstat.
+QC: collect stats via Samtools flagstat.
 
 Quantification: count reads per gene using FeatureCounts and a modified GTF.
 
-Analysis: identify top expressed genes and plot expression distribution with R.
+Analysis: identify top expressed genes and generate distribution plots with R.
 
-Parameters
+## Reproducing the Analysis
 
-Cutadapt
+Download raw data from ENA (SRX3733298).
 
-Paired‐end: enabled
+Download processed assets from the v1.0 release.
 
-Minimum overlap: 3 bp
+Import workflow/pipeline.ga into Galaxy.
 
-Max error rate: 0.1
+Review QC, alignment, and count tables in the release.
 
-Wildcards in adapters: yes; in reads: no
 
-Trim action: remove adapter + flanking
+## Requirements
+Galaxy
+R ≥ 4.0 con pacchetto ggplot2
 
-Minimum read length: 1 bp (no discards)
+## License
+Questo progetto è distribuito sotto la MIT License. Vedi LICENSE per il testo completo.
 
-Pair filter: any
-
-Bowtie2
-
-Reference genome: ASM584v2 (E. coli K-12 MG1655)
-
-Library type: paired‐end
-
-Preset: default
-
-Output: SAM/BAM
-
-Samtools flagstat
-
-Total reads: 14,481,266
-
-Mapped: 96.16%
-
-Properly paired: 91.65%
-
-Singletons: 1.40%
-
-FeatureCounts
-
-Mapping quality filter: 0
-
-Include secondary alignments: yes
-
-Minimum overlap: 0
-
-Ignore duplicates: no
-
-Multi-feature assignment: no
-
-Note: the GTF file was edited to replace contig name U00096.3 with Chromosome for compatibility with the BAM headers.
-
-Results
-
-Alignment Metrics
-
-Wall Clock Time: 7 min (trimmed) vs 15 min (raw)
-
-Max memory usage: ~4.7 GB
-
-CPU cores allocated: 8
-
-Top Expressed Genes
-
-Gene ID
-
-Feature
-
-Raw Count
-
-B2911
-
-RNA 6S
-
-867,693
-
-B3123
-
-RnpB (RNase P)
-
-562,936
-
-B4408
-
-csrB
-
-...
-
-B4441
-
-GlmY
-
-...
-
-B4457
-
-CsrC
-
-...
-
-Expression Distribution
-
-Log2(count+1) distribution shows the expected RNA-Seq skew: most genes have low‐to‐moderate expression, with a minority of highly expressed outliers. See results/expression_distribution.png.
-
-Reproducing the Analysis
-
-Import workflow/pipeline.ga into your Galaxy instance.
-
-Upload or link the raw FASTQ files from ENA (SRX3733298).
-
-Run the workflow end‐to‐end.
-
-Download trimmed FASTQ, BAM, and count tables.
-
-Execute Rscript scripts/analysis.R to generate plots in results/.
-
-Requirements
-
-Galaxy (v20.09 or later) with GPU support for Cutadapt (optional)
-
-R (≥ 4.0) with ggplot2
-
-License
-
-This project is licensed under the MIT License – see the LICENSE file for details.
-
-Acknowledgements
+## Acknowledgements
 
 Galaxy Project
 
